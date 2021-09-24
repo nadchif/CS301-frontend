@@ -38,7 +38,7 @@ export default function Dashboard() {
   }, []);
 
   return authContext.authenticated ? (
-    <div style={{ minHeight: "80vh" }}>
+    <div style={{ minHeight: "80vh" }} className="bg-light pb-5">
       <div className="row">
         <div className="col-12 bg-light p-3 mb-4 text-right ">
           Total: &#8369;
@@ -57,7 +57,7 @@ export default function Dashboard() {
         </div>
         {foods.map((food) => (
           <div className="col-12 col-md-6 my-3" key={food.id}>
-            <div className="card rounded-0">
+            <div className="card rounded-0 bg-white">
               <div className="row no-gutters">
                 <div className="col-sm-5">
                   <img

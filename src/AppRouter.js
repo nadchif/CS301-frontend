@@ -5,6 +5,9 @@ import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import CartPage from "./pages/CartPage";
+import OrdersPage from "pages/OrdersPage";
+import OrderDetailsPage from "pages/OrderDetailsPage";
+import OrderTrackingPage from "pages/OrderTracking";
 
 const AppRouter = () => {
   const location = useLocation();
@@ -15,15 +18,10 @@ const AppRouter = () => {
 
   return (
     <Switch>
-      {/* <Route path="/orders/:id" component={PastorPortfolioPage} /> 
-     
-      
- 
-      <Route path="/verify/:slug" component={VerifyUser} />
-      <Route path="/reset-password" component={SetNewPassword} />
-      <Route path="/forgot" component={ForgotPassword} /> */}
+      <Route path="/orders/:id" component={OrderDetailsPage} />
       <Route path="/cart" component={CartPage} />
-      <Route path="/orders" component={LoginPage} />
+      <Route path="/track" component={OrderTrackingPage} />
+      <Route path="/orders" component={OrdersPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/signup" component={SignUpPage} />
       <Route path="/logout" component={LogoutPage} />

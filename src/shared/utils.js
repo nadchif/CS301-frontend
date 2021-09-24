@@ -1,3 +1,5 @@
+import { format as formatDateL } from "date-fns";
+
 export const countCartItems = (cart) => {
   const total = cart.reduce((prev, current) => {
     return prev + current.quantity;
@@ -11,3 +13,5 @@ export const sumCartItems = (cart) => {
   }, 0);
   return total;
 };
+
+export const formatDate = formatDateL;

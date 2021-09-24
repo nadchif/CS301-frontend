@@ -2,20 +2,27 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRouter from "./AppRouter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthContext from "./context/auth-context";
 import React from "react";
 import { LocalSwal } from "shared/LocalSwal";
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(null);
+  // get data from local storage
+  const localProfile = localStorage.getItem("userData") || null;
+  const decodedProfile = localProfile ? JSON.parse(localProfile) : null;
+
+  const [userData, setUserData] = useState(decodedProfile);
+  const [authenticated, setAuthenticated] = useState(
+    decodedProfile ? true : false
+  );
+
   const loginHandler = (userData) => {
-    console.log("saaa", userData);
     setUserData(userData);
     setAuthenticated(true);
   };
   const logoutHandler = () => {
+    localStorage.clear();
     setUserData(null);
     setAuthenticated(false);
   };
@@ -82,6 +89,7 @@ function App() {
         position: "top-end",
       });
     }
+
     console.log(userData.cart);
   };
 
@@ -127,6 +135,7 @@ function App() {
           }
         }
       }
+
       console.log(userData.cart);
     }
   };
@@ -139,6 +148,10 @@ function App() {
 
     console.log(userData.cart);
   };
+
+  useEffect(() => {
+    localStorage.setItem("userData", JSON.stringify(userData));
+  }, [userData]);
 
   return (
     <Router>

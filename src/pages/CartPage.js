@@ -20,12 +20,25 @@ export default function CartPage() {
     try {
       const result = await axios.post(
         url,
-        data.map((entry) => ({
-          id: entry.id,
-          quantity: entry.quantity,
-        }))
+        {
+          order_data: data.map((entry) => ({
+            id: entry.id,
+            quantity: entry.quantity,
+          })),
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${authContext.userData.access_token}`,
+          },
+        }
       );
-      authContext.login(result.data);
+      LocalSwal.fire(
+        "Order Received!",
+        `Your tracking code is ${result.data.data.tracking} `,
+        "success"
+      );
+      authContext.emptyCart();
     } catch (e) {
       if (e.response.data.error) {
         LocalSwal.fire("Uh Oh", e.response.data.error, "error");
@@ -62,7 +75,7 @@ export default function CartPage() {
         {data.length > 0 ? (
           data
             .sort((a, b) => {
-              return a.price - b.price;
+              return a.id - b.id;
             })
             .map((item) => (
               <div className="col-12 col-md-8 offset-md-2 my-3" key={item.id}>
