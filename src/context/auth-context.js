@@ -1,6 +1,11 @@
 import React from "react";
 const authContext = React.createContext({
   authenticated: false,
-  login: () => {},
+  userData: {},
+  addToCart: (food) => {},
+  removeFromCart: (food, singleMode) => {},
+  emptyCart: () => {},
+  login: (userData) => {},
+  logout: () => {},
 });
 export default authContext;

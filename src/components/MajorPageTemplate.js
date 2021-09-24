@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function MajorPageTemplate({ children }) {
   return (
@@ -13,9 +12,9 @@ export default function MajorPageTemplate({ children }) {
           backgroundSize: "cover",
         }}
       >
-        <div class="col-12">
-          <div class="row">
-            <div className="  mt-5 col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3   p-4  bg-light">
+        <div className="col-12">
+          <div className="row">
+            <div className="  my-5 col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3   p-4  bg-light">
               {children}
             </div>
           </div>

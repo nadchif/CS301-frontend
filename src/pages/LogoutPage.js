@@ -1,5 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useContext } from "react";
+import { Redirect } from "react-router-dom";
 
-export default function LogoutPage() {
-  return <div>LOgged out</div>;
+import AuthContext from "../context/auth-context";
+
+export default function Logout() {
+  const authContext = useContext(AuthContext);
+  useEffect(() => {
+    authContext.logout();
+  }, [authContext]);
+  return <Redirect to="/login" />;
 }

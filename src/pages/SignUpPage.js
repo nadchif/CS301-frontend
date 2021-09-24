@@ -1,20 +1,89 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MajorPageTemplate from "../components/MajorPageTemplate";
+import { ENV_CONSTANTS } from "../env";
+import { LocalSwal } from "../shared/LocalSwal";
 
 export default function SignUpPage() {
+  const [userForm, setUserForm] = useState({
+    fullname: "",
+    email: "",
+    contactNumber: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [isWorking, setIsWorking] = useState(false);
+
+  const handleSubmitForm = async (e) => {
+    e.preventDefault();
+    setIsWorking(true);
+    if (userForm.password !== userForm.confirmPassword) {
+      LocalSwal.fire(
+        "Uh Oh",
+        "Password and password confirmation must match",
+        "warning"
+      );
+
+      setIsWorking(false);
+      return;
+    }
+    const url = `${ENV_CONSTANTS.apiUrl}/user`;
+    try {
+      await axios.post(url, {
+        fullname: userForm.fullname,
+        email: userForm.email,
+        contact_number: userForm.contactNumber,
+        password: userForm.password,
+      });
+      setUserForm({
+        fullname: "",
+        email: "",
+        contactNumber: "",
+        password: "",
+        confirmPassword: "",
+      });
+      LocalSwal.fire(
+        "Welcome",
+        "You've registered successfully! Proceed to login",
+        "success"
+      );
+    } catch (e) {
+      if (e.response.data.error) {
+        LocalSwal.fire("Uh Oh", e.response.data.error, "error");
+      } else {
+        LocalSwal.fire(
+          "Uh Oh",
+          "An error occured. Please try again later",
+          "error"
+        );
+      }
+      console.error("s", e.response);
+    }
+
+    setIsWorking(false);
+  };
+
+  const handleInputChange = (e) => {
+    setUserForm({
+      ...userForm,
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <MajorPageTemplate>
       <h3 className="pb-3">Create Account</h3>
 
-      <form>
+      <form onSubmit={handleSubmitForm}>
         <div className="form-group w-100">
-          <label htmlFor="username">Fullname: </label>
+          <label htmlFor="fullname">Fullname: </label>
           <input
             type="text"
-            name="username"
+            name="fullname"
             required
-            className="form-control mb-2"
+            onChange={handleInputChange}
+            className="form-control mb-2 rounded-0"
           />
         </div>
         <div className="form-group w-100">
@@ -22,17 +91,19 @@ export default function SignUpPage() {
           <input
             type="email"
             name="email"
+            onChange={handleInputChange}
             required
-            className="form-control mb-2"
+            className="form-control mb-2 rounded-0"
           />
         </div>
         <div className="form-group w-100">
           <label htmlFor="contact">Contact Number: </label>
           <input
             type="tel"
-            name="contact"
+            name="contactNumber"
+            onChange={handleInputChange}
             required
-            className="form-control mb-2"
+            className="form-control mb-2 rounded-0"
           />
         </div>
         <div className="form-group w-100">
@@ -40,21 +111,28 @@ export default function SignUpPage() {
           <input
             type="password"
             name="password"
+            onChange={handleInputChange}
+            minLength={5}
             required
-            className="form-control mb-2"
+            className="form-control mb-2 rounded-0"
           />
         </div>
         <div className="form-group w-100">
-          <label htmlFor="confirm-password">Confirm Password: </label>
+          <label htmlFor="confirmPassword">Confirm Password: </label>
           <input
             type="password"
-            name="confirm-password"
+            name="confirmPassword"
+            onChange={handleInputChange}
             required
-            className="form-control mb-2"
+            className="form-control mb-2 rounded-0"
           />
         </div>
 
-        <button type="submit" className="btn btn-block btn-dark">
+        <button
+          type="submit"
+          className="btn btn-block btn-dark rounded-0"
+          disabled={isWorking}
+        >
           Sign Up
         </button>
 
