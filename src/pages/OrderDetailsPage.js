@@ -6,7 +6,6 @@ import { LocalSwal } from "shared/LocalSwal";
 
 import { formatDate, sumCartItems } from "shared/utils";
 import AuthContext from "../context/auth-context";
-import { addMinutes } from "date-fns/addMinutes";
 
 export default function OrderDetailsPage() {
   const authContext = useContext(AuthContext);
@@ -45,10 +44,11 @@ export default function OrderDetailsPage() {
     if (authContext.authenticated) {
       fetchOrders();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return authContext.authenticated ? (
-    orderData ? (
+    orderData && !isWorking ? (
       <>
         <div style={{ minHeight: "80vh" }}>
           <div className="row">

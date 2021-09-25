@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ENV_CONSTANTS } from "env";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { LocalSwal } from "shared/LocalSwal";
 import { sumCartItems } from "shared/utils";
@@ -72,7 +72,7 @@ export default function CartPage() {
             Empty Cart
           </button>
         </div>
-        {data.length > 0 ? (
+        {data && data.length > 0 ? (
           data
             .sort((a, b) => {
               return a.id - b.id;
@@ -136,7 +136,7 @@ export default function CartPage() {
           <button
             className="btn btn-success btn-block btn-lg mb-5 rounded-0"
             type="button"
-            disabled={isWorking || data.length < 1}
+            disabled={isWorking || (data && data.length < 1)}
             onClick={handleCheckout}
           >
             Checkout

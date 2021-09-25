@@ -8,6 +8,7 @@ import CartPage from "./pages/CartPage";
 import OrdersPage from "pages/OrdersPage";
 import OrderDetailsPage from "pages/OrderDetailsPage";
 import OrderTrackingPage from "pages/OrderTracking";
+import ProfilePage from "pages/ProfilePage";
 
 const AppRouter = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const AppRouter = () => {
   return (
     <Switch>
       <Route path="/orders/:id" component={OrderDetailsPage} />
+      <Route path="/profile" component={ProfilePage} />
       <Route path="/cart" component={CartPage} />
       <Route path="/track" component={OrderTrackingPage} />
       <Route path="/orders" component={OrdersPage} />

@@ -40,54 +40,62 @@ export default function OrdersPage() {
     if (authContext.authenticated) {
       fetchOrders();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return authContext.authenticated ? (
-    <div style={{ minHeight: "80vh" }} className=" py-4">
-      <h3>My Orders</h3>
-      <div className="row">
-        <div className="col-12 ">
-          <table className="table table-hover border border-dark">
-            <thead className="thead-light">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Created</th>
-                <th scope="col">Items</th>
-                <th scope="col">Total</th>
-                <th scope="col">Tracking #</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders
-                .sort((a, b) => {
-                  return b.id - a.id;
-                })
-                .map((order) => (
-                  <tr key={order.id}>
-                    <th scope="row">{order.id}</th>
-                    <td>
-                      <Link to={`/orders/${order.id}`}>
-                        {formatDate(new Date(order.created_at), "LLL dd, yyyy")}
-                      </Link>
-                    </td>
-                    <td>
-                      {" "}
-                      <Link to={`/orders/${order.id}`}>
-                        {order.order_data.length}
-                      </Link>
-                    </td>
-                    <td>{sumCartItems(order.order_data).toFixed(2)}</td>
-                    <td>
-                      {" "}
-                      <Link to={`/orders/${order.id}`}>{order.tracking}</Link>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+    isWorking ? (
+      <div>Loading...</div>
+    ) : (
+      <div style={{ minHeight: "80vh" }} className=" py-4">
+        <h3>My Orders</h3>
+        <div className="row">
+          <div className="col-12 ">
+            <table className="table table-hover border border-dark">
+              <thead className="thead-light">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Created</th>
+                  <th scope="col">Items</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Tracking #</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders
+                  .sort((a, b) => {
+                    return b.id - a.id;
+                  })
+                  .map((order) => (
+                    <tr key={order.id}>
+                      <th scope="row">{order.id}</th>
+                      <td>
+                        <Link to={`/orders/${order.id}`}>
+                          {formatDate(
+                            new Date(order.created_at),
+                            "LLL dd, yyyy"
+                          )}
+                        </Link>
+                      </td>
+                      <td>
+                        {" "}
+                        <Link to={`/orders/${order.id}`}>
+                          {order.order_data.length}
+                        </Link>
+                      </td>
+                      <td>{sumCartItems(order.order_data).toFixed(2)}</td>
+                      <td>
+                        {" "}
+                        <Link to={`/orders/${order.id}`}>{order.tracking}</Link>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+    )
   ) : (
     <Redirect to="/login" />
   );

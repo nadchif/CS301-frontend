@@ -1,32 +1,27 @@
 import axios from "axios";
 import { ENV_CONSTANTS } from "env";
-import React, { useContext, useEffect, useState } from "react";
-import { Redirect, Link, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { LocalSwal } from "shared/LocalSwal";
 
-import { formatDate, sumCartItems } from "shared/utils";
-import AuthContext from "../context/auth-context";
-import { addMinutes } from "date-fns/addMinutes";
+import { formatDate } from "shared/utils";
 
 export default function OrderTrackingPage() {
-  const authContext = useContext(AuthContext);
   const [isWorking, setIsWorking] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const [trackingNumber, setTrackingNumber] = useState("false");
 
-  const getOrder = () => {
+  const getOrder = (e) => {
+    e.preventDefault();
     setIsWorking(true);
-    const url = `${ENV_CONSTANTS.apiUrl}/order/${trackingNumber}`;
+    const url = `${ENV_CONSTANTS.apiUrl}/order/track`;
 
-    const fetchOrders = async () => {
+    const checkOrder = async () => {
       try {
-        const result = await axios.get(url, {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${authContext.userData.access_token}`,
-          },
+        const result = await axios.post(url, {
+          tracking_number: trackingNumber,
         });
-        console.log(result.data.data);
+
         setOrderData(result.data.data);
       } catch (e) {
         console.error("api error", e.response);
@@ -42,9 +37,8 @@ export default function OrderTrackingPage() {
       }
       setIsWorking(false);
     };
-    if (authContext.authenticated) {
-      fetchOrders();
-    }
+
+    checkOrder();
   };
 
   const handleInputChange = (e) => {
@@ -54,8 +48,8 @@ export default function OrderTrackingPage() {
   return orderData ? (
     <>
       <div style={{ minHeight: "80vh" }}>
-        <div className="row">
-          <div className="col-12 bg-light p-3 mb-4 ">
+        <div className="row my-5">
+          <div className="col-12 col-md-6 offset-md-3 text-center">
             <h4 className="mt-2 mb-3">
               Status: <span className="text-success">Processsing</span>{" "}
             </h4>
@@ -78,68 +72,29 @@ export default function OrderTrackingPage() {
                 </p>
               </>
             )}
-          </div>
-          {orderData.order_data ? (
-            orderData.order_data
-              .sort((a, b) => {
-                return a.price - b.price;
-              })
-              .map((item) => (
-                <div className="col-12 col-md-8 offset-md-2 my-3" key={item.id}>
-                  <div className="card rounded-0">
-                    <div className="row no-gutters">
-                      <div className="col-sm-3">
-                        <img
-                          style={{
-                            height: "8rem",
-                            width: "100%",
-                            objectFit: "cover",
-                          }}
-                          src={item.photo_url}
-                          alt={item.name}
-                        />
-                      </div>
-                      <div className="col-sm-9 ">
-                        <div className="card-body">
-                          <h5 className="card-title">
-                            &#8369;{(item.price * item.quantity).toFixed(2)}
-                          </h5>
-                          <p className="card-text text-muted">
-                            {item.quantity} x {item.name}{" "}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-          ) : (
-            <div className="col-12 py-5 my-5 text-center">No items</div>
-          )}
-          <div className="col-12 col-md-8 offset-md-2 ">
-            <h3 className="my-3 text-right ">
-              {" "}
-              Total: &#8369;
-              <span className="text-danger font-weight-bold">
-                {orderData.order_data
-                  ? sumCartItems(orderData.order_data).toFixed(2)
-                  : "0.00"}{" "}
-              </span>
-            </h3>
-          </div>
-          <div className="col-12 col-md-8 offset-md-2 mb-5">
-            <Link to="/orders" className="btn  btn-success">
-              &lt;- Return to Orders
+            <Link
+              to={`/orders/${orderData.id}`}
+              className="my-3 btn btn-lg btn-warning rounded-0"
+            >
+              View Order Details
             </Link>
+            &nbsp;
+            <button
+              type="button"
+              onClick={() => setOrderData(null)}
+              className="my-3 btn btn-lg btn-secondary rounded-0"
+            >
+              Track another Order
+            </button>
           </div>
         </div>
       </div>
     </>
   ) : (
     <div className="row py-5 bg-light" style={{ minHeight: "80vh" }}>
-      <div className="col-12 text-center">
-        <h4>Enter Tracking Number</h4>
-        <hr />
+      <div className="col-12 col-md-6 offset-md-3 text-center">
+        <h4 className="my-4">Enter Tracking Number</h4>
+
         <form onSubmit={getOrder}>
           <div className="form-group ">
             <input
@@ -149,9 +104,11 @@ export default function OrderTrackingPage() {
               required
               disabled={isWorking}
               className="form-control mb-2 rounded-0"
-              style={{ maxWidth: "16rem", display: "inline-block" }}
             />
           </div>
+          <button type="submit" className="my-4 btn btn-block btn-warning">
+            Check Status
+          </button>
         </form>
       </div>
     </div>
