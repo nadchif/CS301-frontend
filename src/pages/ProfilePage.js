@@ -108,7 +108,7 @@ export default function ProfilePage() {
       setIsWorking(false);
       return;
     }
-    const url = `${ENV_CONSTANTS.apiUrl}/user`;
+    const url = `${ENV_CONSTANTS.apiUrl}/user/profile`;
     try {
       await axios.patch(
         url,

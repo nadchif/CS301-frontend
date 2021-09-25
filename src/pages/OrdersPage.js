@@ -17,6 +17,7 @@ export default function OrdersPage() {
     const fetchOrders = async () => {
       try {
         const result = await axios.get(url, {
+          baseURL: ENV_CONSTANTS.apiUrl,
           headers: {
             "Content-type": "application/json",
             Authorization: `Bearer ${authContext.userData.access_token}`,
@@ -24,7 +25,7 @@ export default function OrdersPage() {
         });
         setOrders(result.data.data);
       } catch (e) {
-        console.error("api error", e.response);
+        console.error("api error", e.response || e);
         if (e.response && e.response.data && e.response.data.error) {
           LocalSwal.fire("Uh Oh", e.response.data.error, "error");
         } else {

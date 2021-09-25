@@ -83,6 +83,7 @@ export default function SignUpPage() {
             name="fullname"
             required
             onChange={handleInputChange}
+            value={userForm.fullname}
             className="form-control mb-2 rounded-0"
           />
         </div>
@@ -92,6 +93,7 @@ export default function SignUpPage() {
             type="email"
             name="email"
             onChange={handleInputChange}
+            value={userForm.email}
             required
             className="form-control mb-2 rounded-0"
           />
@@ -102,6 +104,7 @@ export default function SignUpPage() {
             type="tel"
             name="contactNumber"
             onChange={handleInputChange}
+            value={userForm.contactNumber}
             required
             className="form-control mb-2 rounded-0"
           />
@@ -113,6 +116,7 @@ export default function SignUpPage() {
             name="password"
             onChange={handleInputChange}
             minLength={5}
+            value={userForm.password}
             required
             className="form-control mb-2 rounded-0"
           />
@@ -123,6 +127,7 @@ export default function SignUpPage() {
             type="password"
             name="confirmPassword"
             onChange={handleInputChange}
+            value={userForm.confirmPassword}
             required
             className="form-control mb-2 rounded-0"
           />

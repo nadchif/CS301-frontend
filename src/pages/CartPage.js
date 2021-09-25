@@ -40,7 +40,7 @@ export default function CartPage() {
       );
       authContext.emptyCart();
     } catch (e) {
-      if (e.response.data.error) {
+      if (e.response && e.response.data && e.response.data.error) {
         LocalSwal.fire("Uh Oh", e.response.data.error, "error");
       } else {
         LocalSwal.fire(
