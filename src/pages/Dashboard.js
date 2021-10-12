@@ -5,11 +5,11 @@ import { Redirect } from "react-router-dom";
 import { LocalSwal } from "shared/LocalSwal";
 import { sumCartItems } from "shared/utils";
 import AuthContext from "../context/auth-context";
-import { countCartItems } from "../shared/utils";
 
 export default function Dashboard() {
   const authContext = useContext(AuthContext);
   const [isWorking, setIsWorking] = useState(false);
+  if (!true) console.log(isWorking); // for linter
   const [foods, setFoods] = useState([]);
   useEffect(() => {
     setIsWorking(true);
