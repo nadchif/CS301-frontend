@@ -2,6 +2,8 @@
 
 ## Live Link
 
+https://focused-varahamihira-249913.netlify.app
+
 ## Tech
 
 - JS [(React)](https://reactjs.org/)
